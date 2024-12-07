@@ -15,17 +15,15 @@ public class PostService {
     private UserRepository userRepository;
     @Autowired
     private NotificationService notificationService;
-    public Post AddPost(Post post) {
-        return postRepository.save(post);
-    }
 
-    public void AddUserPost(Long postId, Long userId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new RuntimeException("Id not fond : " + postId));
+
+    public Post addUserWithPost(Post post, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new RuntimeException("Id not fond : " + userId));
+                .orElseThrow(()-> new RuntimeException("Id not found"));
         post.setUser(user);
-        postRepository.save(post);
+
+        return  postRepository.save(post);
+
     }
 
 

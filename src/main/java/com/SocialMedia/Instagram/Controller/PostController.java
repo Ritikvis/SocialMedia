@@ -8,20 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("Post")
+@RequestMapping("/Post")
 public class PostController {
     @Autowired
     private PostService postService;
-    @PostMapping("addPost")
-    public ResponseEntity<Post> AddPost(@RequestBody Post post){
-        Post post1 = postService.AddPost(post);
-        return new ResponseEntity<>(post1, HttpStatus.CREATED);
+
+//    http://localhost:8080/Post/addUserWithPost/1
+    @PostMapping("/addUserWithPost/{userId}")
+    public ResponseEntity<Post> addUserWithPost(@RequestBody Post post, @PathVariable Long userId) {
+        System.out.println("This is user id"+userId);
+        Post savedPost = postService.addUserWithPost(post, userId);
+        return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
-    @PostMapping("addUserPost")
-    public ResponseEntity<Void> AddUserPost(@RequestParam Long postId,@RequestParam Long userId){
-        postService.AddUserPost(postId,userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
+//    http://localhost:8080/Post/updateLike/1/20
     @PutMapping("updateLike/{postId}/{likeCount}")
     public ResponseEntity<Void> UpdateLikes(@PathVariable Long postId,@PathVariable int likeCount){
         postService.UpdateLikes(postId,likeCount);

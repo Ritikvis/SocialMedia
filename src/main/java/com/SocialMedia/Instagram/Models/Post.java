@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,13 +16,17 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    private LocalDateTime time;
+    @Column(updatable = false)
+    private LocalDateTime time = LocalDateTime.now(); // Set default to current date and time
 
     @Column(name = "likes")
     private int likeCount;
 
     @ManyToOne
-
     private User user;
 
+    @PrePersist
+    protected void onCreate() {
+        this.time = LocalDateTime.now(); // Ensure the time is set when the entity is created
+    }
 }
